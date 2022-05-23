@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   destination:
-    namespace: elementor
+    namespace: default
     server: https://kubernetes.default.svc
   source:
     path: kustomization/overlays/dev/core
