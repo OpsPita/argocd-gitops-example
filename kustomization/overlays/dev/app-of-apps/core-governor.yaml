@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: core-apps
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: elementor
+    server: https://kubernetes.default.svc
+  source:
+    path: kustomization/overlays/dev/core
+    repoURL: https://github.com/OpsPita/argocd-gitops-example.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
