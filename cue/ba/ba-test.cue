@@ -1,7 +1,9 @@
 package argocdcue
+import (
+  "github.com/OpsPita/argocd-gitops-example/definitions"
+)
 
-
-#BA & {
+definitions.#BA & {
   metadata: {
     name: "ba-test"
   }

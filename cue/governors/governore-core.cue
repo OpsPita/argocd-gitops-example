@@ -1,10 +1,10 @@
 package argocdcue
 
 import (
-  "argocd-gitops-example/definitions:governors"
+  "github.com/OpsPita/argocd-gitops-example/definitions"
 )
 
-#Governor & {
+definitions.#Governor & {
   metadata: {
     name: "governor-core"
   }
