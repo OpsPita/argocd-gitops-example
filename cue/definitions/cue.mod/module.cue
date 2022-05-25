@@ -1,1 +1,1 @@
-module: "github.com/argocd-gitops-example/definitions"
+module: "github.com/OpsPita/argocd-gitops-example/definitions"
