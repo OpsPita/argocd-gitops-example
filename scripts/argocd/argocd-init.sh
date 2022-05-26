@@ -14,7 +14,7 @@ do
         	sleep 2
 	        echo "[?] Waiting for argocd to be ready"
 	else
-		kubectl apply -k kustomization/overlays/dev/app-of-apps/.
+		kubectl apply -k ../../kustomization/overlays/dev/app-of-apps/.
 		echo "[*] Argo ready - init app-of-apps deployed"
 		break
 	fi
