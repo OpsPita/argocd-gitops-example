@@ -1,7 +1,8 @@
 package main
 
-import "fmt"
+import "github.com/opspita/argocd-gitops-example/cmd"
 
 func main() {
-	fmt.Println("Hello")
+	cmd.Execute()
+
 }
