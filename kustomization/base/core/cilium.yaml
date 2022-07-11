@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: 'https://helm.cilium.io'
     targetRevision: v1.11.6
-    chart: cilium/cilium
+    chart: cilium
   project: ""
   syncPolicy:
     automated:
