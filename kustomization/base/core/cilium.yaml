@@ -11,9 +11,6 @@ spec:
     repoURL: 'https://helm.cilium.io'
     targetRevision: 1.11.6
     chart: cilium/cilium
-  helm:
-    values: |
-      stam
   project: ""
   syncPolicy:
     automated:

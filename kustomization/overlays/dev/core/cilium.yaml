@@ -6,28 +6,28 @@ metadata:
 spec:
   source:
     targetRevision: 1.11.6
-  helm:
-    values: |
-        bpf:
-          masquerade: false
-        externalIPs:
-          enabled: true
-        hostPort:
-          enabled: true
-        hostServices:
-          enabled: false
-        hubble:
-          relay:
+    helm:
+      values: |
+          bpf:
+            masquerade: false
+          externalIPs:
             enabled: true
-          ui:
+          hostPort:
             enabled: true
-        image:
-          pullPolicy: IfNotPresent
-        ipam:
-          mode: kubernetes
-        kubeProxyReplacement: partial
-        nodePort:
-          enabled: true
+          hostServices:
+            enabled: false
+          hubble:
+            relay:
+              enabled: true
+            ui:
+              enabled: true
+          image:
+            pullPolicy: IfNotPresent
+          ipam:
+            mode: kubernetes
+          kubeProxyReplacement: partial
+          nodePort:
+            enabled: true
   syncPolicy:
     automated:
       prune: true
