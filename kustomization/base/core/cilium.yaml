@@ -9,7 +9,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   source:
     repoURL: 'https://helm.cilium.io'
-    targetRevision: 1.11.6
+    targetRevision: v1.11.6
     chart: cilium/cilium
   project: ""
   syncPolicy:
