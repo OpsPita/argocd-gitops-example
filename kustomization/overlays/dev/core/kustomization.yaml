@@ -4,3 +4,4 @@ resources:
   - ../../../base/core
 patches:
   - path: cert-manager.yaml
+  - path: cilium.yaml
