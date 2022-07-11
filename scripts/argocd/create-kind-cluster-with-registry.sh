@@ -11,23 +11,26 @@ fi
 
 ./create_registry.sh
 # create a cluster with the local registry enabled in containerd
-cat <<EOF | kind create cluster --config=-
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-name: ${1}
-nodes:
-- role: control-plane
-- role: worker
-- role: worker
-- role: worker
-networking:
-  disableDefaultCNI: true
-containerdConfigPatches:
-- |-
-  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:5001"]
-    endpoint = ["http://registry:5001"]
+if [[ $(kind get clusters | grep ${1}) ]]
+then
+  echo "cluster already exists continue"
+  else
+    cat <<EOF | kind create cluster --config=-
+    kind: Cluster
+    apiVersion: kind.x-k8s.io/v1alpha4
+    name: ${1}
+    nodes:
+    - role: control-plane
+    - role: worker
+    - role: worker
+    networking:
+      disableDefaultCNI: false
+    containerdConfigPatches:
+    - |-
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:5001"]
+        endpoint = ["http://registry:5001"]
 EOF
-
+fi
 # connect the registry to the cluster network if not already connected
 if [ "$(docker inspect -f='{{json .NetworkSettings.Networks.kind}}' "${reg_name}")" = 'null' ]; then
   docker network connect "kind" "${reg_name}"
@@ -55,29 +58,32 @@ function argocdInit () {
   ##Installing ArgoCD to newly created cluster
   if [[ $(kubectl cluster-info) ]]
   then
-          kubectl create namespace argocd
-          kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/core-install.yaml
+          if [[ $(kubectl get ns | grep "argocd") ]]
+          then
+              echo "argocd ns available continue"
+          else
+            kubectl create namespace argocd
+            kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/core-install.yaml
+          fi
   fi
 
   echo "Checking to see if argo initated"
   while true
-  do
-  	kubectl get pod -n argocd | grep argocd-repo-server |grep -i Running
-  	if [[ $? -ne 0 ]]
-  	then
-          	sleep 2
-  	        echo "[?] Waiting for argocd to be ready"
-  	else
-  		sleep 5
-  		kubectl apply -k ../../kustomization/overlays/dev/app-of-apps/.
-  		echo "[*] Argo ready - init app-of-apps deployed"
-  		break
-  	fi
-  done
-  #Apply App-of-Apps to automaticly sync core folder
-  echo "Deployment Done"
-
-
+    do
+      kubectl get pod -n argocd | grep argocd-repo-server |grep -i Running
+      if [[ $? -ne 0 ]]
+      then
+              sleep 2
+              echo "[?] Waiting for argocd to be ready"
+      else
+        sleep 5
+        kubectl apply -k ../../kustomization/overlays/dev/app-of-apps/.
+        echo "[*] Argo ready - init app-of-apps deployed"
+        break
+      fi
+    done
+    #Apply App-of-Apps to automaticly sync core folder
+    echo "Deployment Done"
 }
 
 argocdInit
