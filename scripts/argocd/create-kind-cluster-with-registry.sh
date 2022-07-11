@@ -70,8 +70,8 @@ function argocdInit () {
   echo "Checking to see if argo initated"
   while true
     do
-      kubectl get pod -n argocd | grep argocd-repo-server |grep -i Running
-      if [[ $? -ne 0 ]]
+
+      if [[ !$(kubectl get pod -n argocd | grep argocd-repo-server |grep -i Running) ]]
       then
               sleep 2
               echo "[?] Waiting for argocd to be ready"
