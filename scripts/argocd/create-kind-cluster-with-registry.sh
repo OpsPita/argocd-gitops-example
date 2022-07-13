@@ -22,9 +22,8 @@ then
     nodes:
     - role: control-plane
     - role: worker
-    - role: worker
     networking:
-      disableDefaultCNI: false
+      disableDefaultCNI: true
     containerdConfigPatches:
     - |-
       [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:5001"]
@@ -71,19 +70,21 @@ function argocdInit () {
   while true
     do
 
-      if [[ !$(kubectl get pod -n argocd | grep argocd-repo-server |grep -i Running) ]]
+      if [[ $(kubectl get pod -n argocd | grep argocd-repo-server |grep -i Running) ]]
       then
+              sleep 5
+              kubectl apply -k ../../kustomization/overlays/dev/app-of-apps/.
+              echo "[*] Argo ready - init app-of-apps deployed"
+              break
+      else
               sleep 2
               echo "[?] Waiting for argocd to be ready"
-      else
-        sleep 5
-        kubectl apply -k ../../kustomization/overlays/dev/app-of-apps/.
-        echo "[*] Argo ready - init app-of-apps deployed"
-        break
       fi
     done
     #Apply App-of-Apps to automaticly sync core folder
     echo "Deployment Done"
 }
+
+./install_cilium.sh $1 2
 
 argocdInit
