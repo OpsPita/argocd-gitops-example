@@ -213,4 +213,4 @@ roleRef:
   name: controller
 subjects:
   - kind: ServiceAccount
-  name: controller
+    name: controller
