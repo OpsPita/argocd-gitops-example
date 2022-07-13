@@ -4,4 +4,8 @@ resources:
   - cilium.yaml
   - metrics-server.yaml
   - cert-manager.yaml
-  - metallb
+  - metallb/metallb.yaml
+  - metallb/ns.yaml
+  - metallb/psp.yaml
+  - metallb/rbac.yaml
+  - metallb/sa.yaml
