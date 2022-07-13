@@ -6,4 +6,4 @@ patches:
   - path: cert-manager.yaml
   - path: cilium.yaml
   - path: metrics-server.yaml
-  - patch: metallb-ranges.yaml
+  - path: metallb-ranges.yaml
