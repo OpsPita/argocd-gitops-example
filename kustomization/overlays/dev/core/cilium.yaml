@@ -18,9 +18,26 @@ spec:
             enabled: false
           hubble:
             relay:
+              affinity:
+                nodeAntiAffinity:
+                  preferredDuringSchedulingIgnoredDuringExecution:
+                    - weight: 1
+                      preference:
+                        matchExpressions:
+                          - key: node-role.kubernetes.io/master
+                            operator: DoesNotExist
               enabled: true
+              replicas: 1
             ui:
               enabled: true
+              affinity:
+                nodeAntiAffinity:
+                  preferredDuringSchedulingIgnoredDuringExecution:
+                    - weight: 1
+                      preference:
+                        matchExpressions:
+                          - key: node-role.kubernetes.io/master
+                            operator: DoesNotExist
           image:
             pullPolicy: IfNotPresent
           ipam:
