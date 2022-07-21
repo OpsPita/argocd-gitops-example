@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
     app: geth
-  type: NodePort
+  type: LoadBalancer
   ports:
     - name: rpc
       port: 8545
