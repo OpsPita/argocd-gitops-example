@@ -1,12 +1,11 @@
+kind: PersistentVolumeClaim
 apiVersion: v1
-kind: PersistentVolume
 metadata:
   name: geth
   namespace: eth
 spec:
-  capacity:
-    storage: 5Gi
-  volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
-  reclaimPolicy: Retain
+  resources:
+    requests:
+      storage: 5Gi
