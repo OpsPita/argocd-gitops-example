@@ -1,0 +1,37 @@
+bpf:
+  masquerade: false
+externalIPs:
+  enabled: true
+hostPort:
+  enabled: true
+hostServices:
+  enabled: false
+hubble:
+  relay:
+    affinity:
+      nodeAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+                - key: node-role.kubernetes.io/master
+                  operator: DoesNotExist
+    enabled: false
+    replicas: 1
+  ui:
+    enabled: false
+    affinity:
+      nodeAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+                - key: node-role.kubernetes.io/master
+                  operator: DoesNotExist
+image:
+  pullPolicy: IfNotPresent
+ipam:
+  mode: kubernetes
+kubeProxyReplacement: partial
+nodePort:
+  enabled: true

@@ -24,6 +24,8 @@ then
     - role: worker
     networking:
       disableDefaultCNI: true
+      podSubnet: "10.10.0.0/16"
+      serviceSubnet: "10.11.0.0/16"
     containerdConfigPatches:
     - |-
       [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:5001"]
