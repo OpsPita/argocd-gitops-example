@@ -48,7 +48,7 @@ spec:
         hostNetwork:
           enabled: false
         
-        replicas: 2
+        replicas: 1
         
         updateStrategy:
           type: RollingUpdate
