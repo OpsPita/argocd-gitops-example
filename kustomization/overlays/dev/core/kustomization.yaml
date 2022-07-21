@@ -6,5 +6,4 @@ resources:
 patches:
   - path: cert-manager.yaml
   - path: cilium.yaml
-  - path: metrics-server.yaml
 
