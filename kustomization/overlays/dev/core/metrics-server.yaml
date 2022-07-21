@@ -69,7 +69,8 @@ spec:
           - --kubelet-insecure-tls
           - --metric-resolution=10s
         
-        args: []
+        args: 
+        - --kubelet-insecure-tls
         
         livenessProbe:
           httpGet:
