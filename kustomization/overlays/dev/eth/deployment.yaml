@@ -30,4 +30,5 @@ spec:
               mountPath: /opt/geth/geth
       volumes:
         - name: geth-datadir
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: geth
