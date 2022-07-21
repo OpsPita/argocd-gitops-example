@@ -16,7 +16,7 @@ spec:
       containers:
         - name: geth
           image: ethereum/client-go:v1.10.20
-          command: ['/bin/sh', '-c', 'geth --cache 256 --maxpeers 50 --syncmode light --http --http.addr "0.0.0.0" --http.api=db,eth,net,web3  --http.corsdomain "*" --http.vhosts="*" --ws --ws.addr "0.0.0.0" --ws.origins "*"']
+          command: ['/bin/sh', '-c', 'geth -datadir="/opt/geth/geth" --cache 256 --maxpeers 50 --syncmode light --http --http.addr "0.0.0.0" --http.api=db,eth,net,web3  --http.corsdomain "*" --http.vhosts="*" --ws --ws.addr "0.0.0.0" --ws.origins "*"']
 #          command: ['/bin/sh', '-c', 'geth --cache 256 --maxpeers 50 --syncmode light --http --httpaddr "0.0.0.0" --httpapi=db,eth,net,web3 --httpcorsdomain "*" --httpvhosts="*" --ws --wsaddr "0.0.0.0" --wsorigins "*"']
           ports:
             - name: rpc
