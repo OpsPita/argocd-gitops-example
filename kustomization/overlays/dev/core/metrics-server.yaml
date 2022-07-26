@@ -25,7 +25,7 @@ spec:
         
         rbac:
           create: true
-          pspEnabled: false
+          pspEnabled: true
         
         apiService:
           create: true
