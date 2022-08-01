@@ -4,3 +4,4 @@ resources:
   - defaultProject.yaml
   - core-governor.yaml
   - eth-governor.yaml
+  - argo-governor.yaml
