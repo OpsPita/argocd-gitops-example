@@ -185,7 +185,6 @@ spec:
         service:
           type: LoadBalancer
           port: "9000"
-          nodePort: 32000
         
         ## Configure Ingress based on the documentation here: https://kubernetes.io/docs/concepts/services-networking/ingress/
         ##
