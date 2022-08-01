@@ -191,7 +191,7 @@ spec:
         ##
         
         ingress:
-          enabled: true
+          enabled: false
           # ingressClassName: ""
           labels: {}
           # node-role.kubernetes.io/ingress: platform
@@ -219,7 +219,7 @@ spec:
           nodePort: 32001
         
         consoleIngress:
-          enabled: true
+          enabled: false
           # ingressClassName: ""
           labels: {}
           # node-role.kubernetes.io/ingress: platform
