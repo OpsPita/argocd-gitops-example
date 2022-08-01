@@ -124,7 +124,7 @@ spec:
         # Number of drives attached to a node
         drivesPerNode: 1
         # Number of MinIO containers running
-        replicas: 16
+        replicas: 4
         # Number of expanded MinIO clusters
         pools: 1
         
