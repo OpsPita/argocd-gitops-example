@@ -4,6 +4,7 @@ metadata:
   name: argo-workflows
   namespace: argocd
 spec:
+  project: ""
   destination:
     namespace: kube-system
     server: 'https://kubernetes.default.svc'
