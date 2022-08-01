@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-apps
+  namespace: argocd
+spec:
+  project: ""
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  source:
+    path: kustomization/overlays/dev/argo-project
+    repoURL: https://github.com/OpsPita/argocd-gitops-example.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
