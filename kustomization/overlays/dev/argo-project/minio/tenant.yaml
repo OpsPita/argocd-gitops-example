@@ -1,0 +1,74 @@
+apiVersion: minio.min.io/v2
+kind: Tenant
+metadata:
+  name: minio-tenant
+  namespace: minio
+spec:
+  configuration:
+    name: minio-tenant-env-configuration
+  credsSecret:
+    name: minio-tenant-secret
+  exposeServices:
+    console: false
+    minio: false
+  image: minio/minio:RELEASE.2022-07-30T05-21-40Z
+  imagePullSecret: {}
+  log:
+    audit:
+      diskCapacityGB: 5
+    db:
+      resources: {}
+      securityContext:
+        fsGroup: 999
+        runAsGroup: 999
+        runAsNonRoot: true
+        runAsUser: 999
+      volumeClaimTemplate:
+        metadata:
+          name: minio-tenant-log
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: '5368709120'
+        status: {}
+    resources: {}
+    securityContext:
+      fsGroup: 1000
+      runAsGroup: 1000
+      runAsNonRoot: true
+      runAsUser: 1000
+  mountPath: /export
+  pools:
+    - name: pool-0
+      resources:
+        requests:
+          cpu: '1'
+          memory: 2Gi
+      servers: 1
+      volumeClaimTemplate:
+        metadata:
+          name: data
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: '75161927680'
+          storageClassName: local-path
+        status: {}
+      volumesPerServer: 1
+  prometheus:
+    diskCapacityGB: 5
+    resources: {}
+    securityContext:
+      fsGroup: 1000
+      runAsGroup: 1000
+      runAsNonRoot: true
+      runAsUser: 1000
+  requestAutoCert: true
+  users:
+    - name: minio-tenant-user-0
+scheduler:
+  name: ''
