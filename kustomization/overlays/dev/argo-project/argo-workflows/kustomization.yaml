@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   - workflows-chart.yaml
   - default-artifact.yaml
-  - workflows-bucket-secret.json
+  - workflows-bucket-secret.yaml
