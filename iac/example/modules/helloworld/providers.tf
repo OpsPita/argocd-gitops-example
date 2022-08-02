@@ -7,6 +7,4 @@ terraform {
   }
 }
 
-provider "local" {
-  # Configuration options
-}
+
