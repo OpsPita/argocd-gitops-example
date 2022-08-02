@@ -6,7 +6,7 @@ metadata:
 spec:
   project: ""
   destination:
-    namespace: sealed-secrets
+    namespace: kube-system
     server: 'https://kubernetes.default.svc'
   source:
     repoURL: 'https://bitnami-labs.github.io/sealed-secrets'
