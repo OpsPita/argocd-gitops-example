@@ -15,8 +15,8 @@ data:
       endpoint: minio:9000
       insecure: true
       accessKeySecret:
-        name: argoworkflows-bucket-cred
+        name: argoworkflow-bucket-cred
         key: accesskey
       secretKeySecret:
-        name: argoworkflows-bucket-cred
+        name: argoworkflow-bucket-cred
         key: secretkey
