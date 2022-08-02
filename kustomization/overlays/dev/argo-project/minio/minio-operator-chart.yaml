@@ -74,7 +74,7 @@ spec:
             pathType: Prefix
           volumes: [ ]
           volumeMounts: [ ]
-    syncPolicy:
+  syncPolicy:
     automated:
       prune: true
       selfHeal: true
