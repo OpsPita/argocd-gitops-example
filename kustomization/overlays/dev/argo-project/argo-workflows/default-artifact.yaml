@@ -13,7 +13,7 @@ data:
     s3:
       bucket: argoworkflows
       endpoint: minio.minio:9123
-      insecure: true
+      insecure: false
       accessKeySecret:
         name: argoworkflow-bucket-cred
         key: accesskey
