@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: 'https://operator.min.io/'
     targetRevision: v4.4.27
-    chart: minio
+    chart: operator
     helm:
       values: |
         # Default values for minio-operator.
