@@ -10,7 +10,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   source:
     repoURL: 'https://operator.min.io/'
-    targetRevision: 8.0.10
+    targetRevision: 4.4.27
     chart: minio
     helm:
       values: |
