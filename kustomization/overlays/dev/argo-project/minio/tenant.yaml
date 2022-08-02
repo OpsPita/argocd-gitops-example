@@ -1,7 +1,7 @@
 apiVersion: minio.min.io/v2
 kind: Tenant
 metadata:
-  name: minio-tenant
+  name: minio-worker
   namespace: minio
 spec:
   configuration:
