@@ -501,7 +501,7 @@ spec:
           extraContainers: []
         
         # -- Influences the creation of the ConfigMap for the workflow-controller itself.
-        useDefaultArtifactRepo: false
+        useDefaultArtifactRepo: true
         # -- Use static credentials for S3 (eg. when not using AWS IRSA)
         useStaticCredentials: true
         artifactRepository:
