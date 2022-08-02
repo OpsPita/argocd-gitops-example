@@ -4,6 +4,7 @@ metadata:
   # If you want to use this config map by default, name it "artifact-repositories". Otherwise, you can provide a reference to a
   # different config map in `artifactRepositoryRef.configMap`.
   name: artifact-repository
+  namespace: kube-system
   annotations:
     # v3.0 and after - if you want to use a specific key, put that key into this annotation.
     workflows.argoproj.io/default-artifact-repository: default-v1-s3-artifact-repository
