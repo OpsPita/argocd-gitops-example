@@ -22,7 +22,7 @@ data:
         key: secretkey
   terraform-states: |
     s3:
-      bucket: argoworkflows
+      bucket: terraform-states
       endpoint: minio.minio:80
       insecure: true
       accessKeySecret:
