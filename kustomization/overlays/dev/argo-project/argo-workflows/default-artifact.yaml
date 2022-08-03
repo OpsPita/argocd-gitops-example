@@ -20,3 +20,14 @@ data:
       secretKeySecret:
         name: argoworkflow-bucket-cred
         key: secretkey
+  terraform-states: |
+    s3:
+      bucket: argoworkflows
+      endpoint: minio.minio:80
+      insecure: true
+      accessKeySecret:
+        name: argoworkflow-bucket-cred
+        key: accesskey
+      secretKeySecret:
+        name: argoworkflow-bucket-cred
+        key: secretkey
