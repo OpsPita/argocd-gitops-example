@@ -1,4 +1,4 @@
 module "hellowrold" {
   source = "../../modules/helloworld"
-  name = "Sami Akabai"
+  name = "Sami Akabai P"
 }
