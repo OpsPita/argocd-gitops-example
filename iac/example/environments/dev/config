@@ -1,0 +1,2 @@
+bucket = "terraform-states"
+key = "dev/eu-west-1/terraform.state"
