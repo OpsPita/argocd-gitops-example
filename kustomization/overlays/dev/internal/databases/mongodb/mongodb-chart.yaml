@@ -10,7 +10,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   source:
     repoURL: 'https://charts.bitnami.com/bitnami'
-    targetRevision: 0.16.8
+    targetRevision: 13.0.0
     chart: mongodb
     helm:
       values: |
