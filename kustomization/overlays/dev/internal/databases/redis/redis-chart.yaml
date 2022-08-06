@@ -1,0 +1,307 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: redis-internal
+  namespace: argocd
+spec:
+  project: ""
+  destination:
+    namespace: redis
+    server: 'https://kubernetes.default.svc'
+  source:
+    repoURL: 'https://charts.bitnami.com/bitnami'
+    targetRevision: 17.0.8
+    chart: redis
+    helm:
+      values: |
+        global:
+          imageRegistry: ""
+          ## E.g.
+          ## imagePullSecrets:
+          ##   - myRegistryKeySecretName
+          ##
+          imagePullSecrets: []
+          storageClass: ""
+          redis:
+            password: ""
+
+        kubeVersion: ""
+        nameOverride: ""
+        fullnameOverride: "redis-internal"
+        commonLabels: {}
+        commonAnnotations: {}
+        secretAnnotations: {}
+        clusterDomain: cluster.local
+        extraDeploy: []
+
+        diagnosticMode:
+          enabled: false
+          command:
+          args:
+            - infinity
+
+
+        image:
+          registry: docker.io
+          repository: bitnami/redis
+          tag: 7.0.4-debian-11-r9
+          pullPolicy: IfNotPresent
+          pullSecrets: []
+          debug: false
+
+        architecture: standalone
+        auth:
+          enabled: false
+          sentinel: false
+          password: ""
+          existingSecret: ""
+          existingSecretPasswordKey: ""
+          usePasswordFiles: false
+
+        commonConfiguration: |-
+          # Enable AOF https://redis.io/topics/persistence#append-only-file
+          appendonly yes
+          # Disable RDB persistence, AOF persistence already enabled.
+          save ""
+        ## @param existingConfigmap The name of an existing ConfigMap with your custom configuration for Redis&reg; nodes
+        ##
+        existingConfigmap: ""
+
+        ## @section Redis&reg; master configuration parameters
+        ##
+
+        master:
+          count: 1
+          configuration: ""
+          disableCommands:
+            - FLUSHDB
+
+          extraFlags:
+            - "--maxmemory-policy allkeys-lru"
+
+          containerPorts:
+            redis: 6379
+       
+          startupProbe:
+            enabled: false
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 5
+       
+          livenessProbe:
+            enabled: true
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 5
+
+          readinessProbe:
+            enabled: true
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 5
+
+          resources:
+            limits: {}
+            requests: {}
+
+          podSecurityContext:
+            enabled: true
+            fsGroup: 1001
+
+          containerSecurityContext:
+            enabled: true
+            runAsUser: 1001
+
+          kind: StatefulSet
+          schedulerName: ""
+          updateStrategy:
+            type: RollingUpdate
+            rollingUpdate: {}
+          priorityClassName: ""
+          hostAliases: []
+          ## @param master.extraVolumeMounts Optionally specify extra list of additional volumeMounts for the Redis&reg; master container(s)
+          ##
+          persistence:
+            ## @param master.persistence.enabled Enable persistence on Redis&reg; master nodes using Persistent Volume Claims
+            ##
+            enabled: true
+            ## @param master.persistence.medium Provide a medium for `emptyDir` volumes.
+            ##
+            medium: ""
+            ## @param master.persistence.sizeLimit Set this to enable a size limit for `emptyDir` volumes.
+            ##
+            sizeLimit: ""
+            ## @param master.persistence.path The path the volume will be mounted at on Redis&reg; master containers
+            ## NOTE: Useful when using different Redis&reg; images
+            ##
+            path: /data
+            ## @param master.persistence.subPath The subdirectory of the volume to mount on Redis&reg; master containers
+            ## NOTE: Useful in dev environments
+            ##
+            subPath: ""
+            ## @param master.persistence.storageClass Persistent Volume storage class
+            ## If defined, storageClassName: <storageClass>
+            ## If set to "-", storageClassName: "", which disables dynamic provisioning
+            ## If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner
+            ##
+            storageClass: ""
+            ## @param master.persistence.accessModes Persistent Volume access modes
+            ##
+            accessModes:
+              - ReadWriteOnce
+            ## @param master.persistence.size Persistent Volume size
+            ##
+            size: 8Gi
+            ## @param master.persistence.annotations Additional custom annotations for the PVC
+            ##
+            annotations: {}
+            ## @param master.persistence.selector Additional labels to match for the PVC
+            ## e.g:
+            ## selector:
+            ##   matchLabels:
+            ##     app: my-app
+            ##
+            selector: {}
+            ## @param master.persistence.dataSource Custom PVC data source
+            ##
+            dataSource: {}
+            ## @param master.persistence.existingClaim Use a existing PVC which must be created manually before bound
+            ## NOTE: requires master.persistence.enabled: true
+            ##
+            existingClaim: ""
+          service:
+            type: ClusterIP
+            ports:
+              redis: 6379
+            nodePorts:
+              redis: ""
+            externalTrafficPolicy: Cluster
+            extraPorts: []
+            internalTrafficPolicy: Cluster
+            clusterIP: ""
+            loadBalancerIP: ""
+            loadBalancerSourceRanges: []
+            annotations: {}
+            sessionAffinity: None
+            sessionAffinityConfig: {}
+          terminationGracePeriodSeconds: 30
+
+
+        ## @section Init Container Parameters
+        ##
+
+        ## 'volumePermissions' init container parameters
+        ## Changes the owner and group of the persistent volume mount point to runAsUser:fsGroup values
+        ##   based on the *podSecurityContext/*containerSecurityContext parameters
+        ##
+        volumePermissions:
+          ## @param volumePermissions.enabled Enable init container that changes the owner/group of the PV mount point to `runAsUser:fsGroup`
+          ##
+          enabled: false
+          ## Bitnami Shell image
+          ## ref: https://hub.docker.com/r/bitnami/bitnami-shell/tags/
+          ## @param volumePermissions.image.registry Bitnami Shell image registry
+          ## @param volumePermissions.image.repository Bitnami Shell image repository
+          ## @param volumePermissions.image.tag Bitnami Shell image tag (immutable tags are recommended)
+          ## @param volumePermissions.image.pullPolicy Bitnami Shell image pull policy
+          ## @param volumePermissions.image.pullSecrets Bitnami Shell image pull secrets
+          ##
+          image:
+            registry: docker.io
+            repository: bitnami/bitnami-shell
+            tag: 11-debian-11-r22
+            pullPolicy: IfNotPresent
+            ## Optionally specify an array of imagePullSecrets.
+            ## Secrets must be manually created in the namespace.
+            ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+            ## e.g:
+            ## pullSecrets:
+            ##   - myRegistryKeySecretName
+            ##
+            pullSecrets: []
+          ## Init container's resource requests and limits
+          ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+          ## @param volumePermissions.resources.limits The resources limits for the init container
+          ## @param volumePermissions.resources.requests The requested resources for the init container
+          ##
+          resources:
+            limits: {}
+            requests: {}
+          ## Init container Container Security Context
+          ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+          ## @param volumePermissions.containerSecurityContext.runAsUser Set init container's Security Context runAsUser
+          ## NOTE: when runAsUser is set to special value "auto", init container will try to chown the
+          ##   data folder to auto-determined user&group, using commands: `id -u`:`id -G | cut -d" " -f2`
+          ##   "auto" is especially useful for OpenShift which has scc with dynamic user ids (and 0 is not allowed)
+          ##
+          containerSecurityContext:
+            runAsUser: 0
+
+        ## init-sysctl container parameters
+        ## used to perform sysctl operation to modify Kernel settings (needed sometimes to avoid warnings)
+        ##
+        sysctl:
+          ## @param sysctl.enabled Enable init container to modify Kernel settings
+          ##
+          enabled: false
+          ## Bitnami Shell image
+          ## ref: https://hub.docker.com/r/bitnami/bitnami-shell/tags/
+          ## @param sysctl.image.registry Bitnami Shell image registry
+          ## @param sysctl.image.repository Bitnami Shell image repository
+          ## @param sysctl.image.tag Bitnami Shell image tag (immutable tags are recommended)
+          ## @param sysctl.image.pullPolicy Bitnami Shell image pull policy
+          ## @param sysctl.image.pullSecrets Bitnami Shell image pull secrets
+          ##
+          image:
+            registry: docker.io
+            repository: bitnami/bitnami-shell
+            tag: 11-debian-11-r22
+            pullPolicy: IfNotPresent
+            ## Optionally specify an array of imagePullSecrets.
+            ## Secrets must be manually created in the namespace.
+            ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+            ## e.g:
+            ## pullSecrets:
+            ##   - myRegistryKeySecretName
+            ##
+            pullSecrets: []
+          ## @param sysctl.command Override default init-sysctl container command (useful when using custom images)
+          ##
+          command: []
+          ## @param sysctl.mountHostSys Mount the host `/sys` folder to `/host-sys`
+          ##
+          mountHostSys: false
+          ## Init container's resource requests and limits
+          ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+          ## @param sysctl.resources.limits The resources limits for the init container
+          ## @param sysctl.resources.requests The requested resources for the init container
+          ##
+          resources:
+            limits: {}
+            requests: {}
+
+        ## @section useExternalDNS Parameters
+        ##
+        ## @param useExternalDNS.enabled Enable various syntax that would enable external-dns to work.  Note this requires a working installation of `external-dns` to be usable.
+        ## @param useExternalDNS.additionalAnnotations Extra annotations to be utilized when `external-dns` is enabled.
+        ## @param useExternalDNS.annotationKey The annotation key utilized when `external-dns` is enabled.
+        ## @param useExternalDNS.suffix The DNS suffix utilized when `external-dns` is enabled.  Note that we prepend the suffix with the full name of the release.
+        ##
+        useExternalDNS:
+          enabled: false
+          suffix: ""
+          annotationKey: external-dns.alpha.kubernetes.io/
+          additionalAnnotations: {}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PruneLast=true
+      - CreateNamespace=true
